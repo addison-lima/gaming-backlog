@@ -2,6 +2,9 @@ package com.addison.gamingbacklog;
 
 import android.os.Bundle;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        initializeAds();
     }
 
+    private void initializeAds() {
+        MobileAds.initialize(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        AdView adView = findViewById(R.id.adView);
+        adView.loadAd(adRequest);
+    }
 }
