@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/statusFragment">
+
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.addison.gamingbacklog.ui.status.StatusFragment"
+        android:label="fragment_status"
+        tools:layout="@layout/fragment_status" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.addison.gamingbacklog.ui.library.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.addison.gamingbacklog.ui.discover.DiscoverFragment"
+        android:label="fragment_discover"
+        tools:layout="@layout/fragment_discover" />
+</navigation>
