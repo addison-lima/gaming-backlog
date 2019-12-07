@@ -40,7 +40,7 @@ public class IGDBService {
     public void retrieveGames() {
         mRequestStatusLiveData.setValue(new RequestStatus(LOADING));
 
-        String fields = "fields name, summary; ";
+        String fields = "fields cover.url, first_release_date, name, summary, videos.name, videos.video_id; ";
         String sort = "sort aggregated_rating desc; ";
         String filters = "where aggregated_rating_count >= 10; limit 20;";
 

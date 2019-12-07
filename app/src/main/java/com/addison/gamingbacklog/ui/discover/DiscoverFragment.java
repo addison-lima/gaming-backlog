@@ -1,6 +1,7 @@
 package com.addison.gamingbacklog.ui.discover;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import com.addison.gamingbacklog.R;
 import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
 import com.addison.gamingbacklog.repository.service.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
+import com.addison.gamingbacklog.repository.service.Video;
 import com.addison.gamingbacklog.ui.MainActivity;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,6 +70,22 @@ public class DiscoverFragment extends Fragment {
         return new Observer<List<Game>>() {
             @Override
             public void onChanged(List<Game> games) {
+                if (games != null && !games.isEmpty()) {
+                    for (Game game : games) {
+                        Log.d("ADD_TEST", "id: " + game.getId());
+                        Log.d("ADD_TEST", "name: " + game.getName());
+                        Log.d("ADD_TEST", "summary: " + game.getSummary());
+                        Log.d("ADD_TEST", "cover: " + game.getCover().getUrl());
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
+                        Log.d("ADD_TEST", "first_release_date: " + calendar.get(Calendar.YEAR));
+                        for (Video video : game.getVideos()) {
+                            Log.d("ADD_TEST", "video name: " + video.getName());
+                            Log.d("ADD_TEST", "video thumbnail url: " + video.getThumbnailUrl());
+                            Log.d("ADD_TEST", "video url: " + video.getUrl());
+                        }
+                    }
+                }
             }
         };
     }
