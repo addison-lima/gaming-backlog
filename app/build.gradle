@@ -13,9 +13,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', "IGDB_API_KEY", GamingBacklog_IGDBApiKey
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "IGDB_API_KEY", GamingBacklog_IGDBApiKey
         }
     }
 }
@@ -28,6 +32,13 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
+
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.retrofit2:converter-scalars:2.4.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
 
