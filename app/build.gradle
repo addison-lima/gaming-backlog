@@ -22,6 +22,9 @@ android {
             buildConfigField 'String', "IGDB_API_KEY", GamingBacklog_IGDBApiKey
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {

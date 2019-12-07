@@ -6,27 +6,42 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.addison.gamingbacklog.R;
+import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
 import com.addison.gamingbacklog.repository.service.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
 
 import java.util.List;
 
 public class DiscoverFragment extends Fragment {
+
+    private FragmentDiscoverBinding mFragmentDiscoverBinding;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        DiscoverViewModel discoverViewModel = ViewModelProviders.of(this).get(
-                DiscoverViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        DiscoverViewModel discoverViewModel = ViewModelProviders.of(this)
+                .get(DiscoverViewModel.class);
 
         discoverViewModel.getRequestStatus().observe(this, getRequestStatusObserver());
         discoverViewModel.getGamesList().observe(this, getGamesListObserver());
+    }
 
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mFragmentDiscoverBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_discover,
+                container, false);
+        mFragmentDiscoverBinding.setLifecycleOwner(this);
+
+        return mFragmentDiscoverBinding.getRoot();
     }
 
     private Observer<RequestStatus> getRequestStatusObserver() {
@@ -49,14 +64,11 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void updateUi(RequestStatus.RequestState requestState) {
-        View view = getView();
-        if (view != null) {
-            view.findViewById(R.id.tv_failure_message)
-                    .setVisibility(requestState.equals(RequestStatus.RequestState.FAILURE)
-                            ? View.VISIBLE : View.INVISIBLE);
-            view.findViewById(R.id.pb_loading_indicator)
-                    .setVisibility(requestState.equals(RequestStatus.RequestState.LOADING)
-                            ? View.VISIBLE : View.INVISIBLE);
-        }
+        mFragmentDiscoverBinding.tvFailureMessage
+                .setVisibility(requestState.equals(RequestStatus.RequestState.FAILURE)
+                        ? View.VISIBLE : View.INVISIBLE);
+        mFragmentDiscoverBinding.pbLoadingIndicator
+                .setVisibility(requestState.equals(RequestStatus.RequestState.LOADING)
+                        ? View.VISIBLE : View.INVISIBLE);
     }
 }
