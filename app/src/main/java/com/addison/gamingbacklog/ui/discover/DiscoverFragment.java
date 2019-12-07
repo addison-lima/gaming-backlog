@@ -16,8 +16,10 @@ import com.addison.gamingbacklog.R;
 import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
 import com.addison.gamingbacklog.repository.service.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
+import com.addison.gamingbacklog.ui.MainActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DiscoverFragment extends Fragment {
 
@@ -42,6 +44,12 @@ public class DiscoverFragment extends Fragment {
         mFragmentDiscoverBinding.setLifecycleOwner(this);
 
         return mFragmentDiscoverBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackScreen("onResume Discover");
     }
 
     private Observer<RequestStatus> getRequestStatusObserver() {
@@ -70,5 +78,9 @@ public class DiscoverFragment extends Fragment {
         mFragmentDiscoverBinding.pbLoadingIndicator
                 .setVisibility(requestState.equals(RequestStatus.RequestState.LOADING)
                         ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private void trackScreen(String screenName) {
+        ((MainActivity) Objects.requireNonNull(getActivity())).trackScreen(screenName);
     }
 }
