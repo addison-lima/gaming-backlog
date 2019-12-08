@@ -1,7 +1,7 @@
 package com.addison.gamingbacklog.ui.discover;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +17,22 @@ import com.addison.gamingbacklog.R;
 import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
 import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
-import com.addison.gamingbacklog.repository.service.models.Video;
 import com.addison.gamingbacklog.ui.MainActivity;
+import com.addison.gamingbacklog.ui.details.DetailsActivity;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-public class DiscoverFragment extends Fragment {
+public class DiscoverFragment extends Fragment implements DiscoverAdapter.DiscoverAdapterOnClickHandler {
 
     private FragmentDiscoverBinding mFragmentDiscoverBinding;
+    private DiscoverAdapter mDiscoverAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDiscoverAdapter = new DiscoverAdapter(this);
 
         DiscoverViewModel discoverViewModel = ViewModelProviders.of(this)
                 .get(DiscoverViewModel.class);
@@ -55,6 +57,12 @@ public class DiscoverFragment extends Fragment {
         trackScreen("onResume Discover");
     }
 
+    @Override
+    public void onClick(Game game) {
+        Intent intent = new Intent(getContext(), DetailsActivity.class);
+        startActivity(intent);
+    }
+
     private Observer<RequestStatus> getRequestStatusObserver() {
         return new Observer<RequestStatus>() {
             @Override
@@ -70,22 +78,7 @@ public class DiscoverFragment extends Fragment {
         return new Observer<List<Game>>() {
             @Override
             public void onChanged(List<Game> games) {
-                if (games != null && !games.isEmpty()) {
-                    for (Game game : games) {
-                        Log.d("ADD_TEST", "id: " + game.getId());
-                        Log.d("ADD_TEST", "name: " + game.getName());
-                        Log.d("ADD_TEST", "summary: " + game.getSummary());
-                        Log.d("ADD_TEST", "cover: " + game.getCover().getUrl());
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
-                        Log.d("ADD_TEST", "first_release_date: " + calendar.get(Calendar.YEAR));
-//                        for (Video video : game.getVideos()) {
-//                            Log.d("ADD_TEST", "video name: " + video.getName());
-//                            Log.d("ADD_TEST", "video thumbnail url: " + video.getThumbnailUrl());
-//                            Log.d("ADD_TEST", "video url: " + video.getUrl());
-//                        }
-                    }
-                }
+                mDiscoverAdapter.setData(games);
             }
         };
     }

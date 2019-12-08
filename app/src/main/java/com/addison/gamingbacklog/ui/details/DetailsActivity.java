@@ -1,7 +1,14 @@
 package com.addison.gamingbacklog.ui.details;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.addison.gamingbacklog.GamingBacklogApplication;
+import com.addison.gamingbacklog.repository.service.models.Video;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -12,7 +19,10 @@ import android.view.View;
 
 import com.addison.gamingbacklog.R;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements VideosAdapter.VideosAdapterOnClickHandler {
+
+    private Tracker mTracker;
+    private VideosAdapter mVideosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,40 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mVideosAdapter = new VideosAdapter(this);
+
+        initializeTracker();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackScreen("onResume Details");
+    }
+
+    @Override
+    public void onClick(Video video) {
+        try {
+            Intent appIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(video.getAppIntent()));
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(video.getWebIntent()));
+            startActivity(webIntent);
+        }
+    }
+
+    private void initializeTracker() {
+        GamingBacklogApplication application = (GamingBacklogApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    private void trackScreen(String screenName) {
+        if (mTracker != null) {
+            mTracker.setScreenName(screenName);
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
+    }
 }

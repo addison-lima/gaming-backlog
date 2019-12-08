@@ -22,7 +22,11 @@ public class Video {
         return "https://img.youtube.com/vi/" + mVideoId + "/hqdefault.jpg";
     }
 
-    public String getUrl() {
+    public String getAppIntent() {
+        return "vnd.youtube:" + mVideoId;
+    }
+
+    public String getWebIntent() {
         return "http://www.youtube.com/watch?v=" + mVideoId;
     }
 }
