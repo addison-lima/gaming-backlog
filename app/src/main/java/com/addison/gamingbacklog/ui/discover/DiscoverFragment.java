@@ -79,11 +79,11 @@ public class DiscoverFragment extends Fragment {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
                         Log.d("ADD_TEST", "first_release_date: " + calendar.get(Calendar.YEAR));
-                        for (Video video : game.getVideos()) {
-                            Log.d("ADD_TEST", "video name: " + video.getName());
-                            Log.d("ADD_TEST", "video thumbnail url: " + video.getThumbnailUrl());
-                            Log.d("ADD_TEST", "video url: " + video.getUrl());
-                        }
+//                        for (Video video : game.getVideos()) {
+//                            Log.d("ADD_TEST", "video name: " + video.getName());
+//                            Log.d("ADD_TEST", "video thumbnail url: " + video.getThumbnailUrl());
+//                            Log.d("ADD_TEST", "video url: " + video.getUrl());
+//                        }
                     }
                 }
             }

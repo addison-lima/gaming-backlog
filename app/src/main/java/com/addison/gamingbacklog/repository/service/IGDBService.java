@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.addison.gamingbacklog.BuildConfig;
 import com.addison.gamingbacklog.repository.service.models.Game;
+import com.addison.gamingbacklog.repository.service.models.Video;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,15 +32,18 @@ public class IGDBService {
 
     private final IGDBApi mService;
 
-    private MutableLiveData<RequestStatus> mRequestStatusLiveData = new MutableLiveData<>();
+    private MutableLiveData<RequestStatus> mRequestStatusGamesList = new MutableLiveData<>();
     private MutableLiveData<List<Game>> mGamesListLiveData = new MutableLiveData<>();
+
+    private MutableLiveData<RequestStatus> mRequestStatusVideosList = new MutableLiveData<>();
+    private MutableLiveData<List<Video>> mGameVideosListLiveData = new MutableLiveData<>();
 
     public IGDBService() {
         mService = provideRetrofit().create(IGDBApi.class);
     }
 
     public void retrieveGames() {
-        mRequestStatusLiveData.setValue(new RequestStatus(LOADING));
+        mRequestStatusGamesList.setValue(new RequestStatus(LOADING));
 
         String fields = "fields cover.url, first_release_date, name, summary, videos.name, videos.video_id; ";
         String sort = "sort aggregated_rating desc; ";
@@ -49,12 +53,26 @@ public class IGDBService {
         call.enqueue(getGamesListCallback());
     }
 
+    public void retrieveGameVideos(Integer id) {
+        mRequestStatusVideosList.setValue(new RequestStatus(LOADING));
+
+        String fields = "fields name, video_id; ";
+        String filter = "where game = " + id + ";";
+
+        Call<List<Video>> call = mService.getGameVideos(fields + filter);
+        call.enqueue(getVideosListCallback());
+    }
+
     public LiveData<RequestStatus> getRequestStatus() {
-        return mRequestStatusLiveData;
+        return mRequestStatusGamesList;
     }
 
     public LiveData<List<Game>> getGamesList() {
         return mGamesListLiveData;
+    }
+
+    public LiveData<List<Video>> getGameVideosList() {
+        return mGameVideosListLiveData;
     }
 
     private Retrofit provideRetrofit() {
@@ -93,7 +111,7 @@ public class IGDBService {
         return new Callback<List<Game>>() {
             @Override
             public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
-                mRequestStatusLiveData.setValue(response.isSuccessful()
+                mRequestStatusGamesList.setValue(response.isSuccessful()
                         ? new RequestStatus(SUCCESS)
                         : new RequestStatus(FAILURE));
                 mGamesListLiveData.setValue(response.body());
@@ -101,7 +119,24 @@ public class IGDBService {
 
             @Override
             public void onFailure(Call<List<Game>> call, Throwable t) {
-                mRequestStatusLiveData.setValue(new RequestStatus(FAILURE));
+                mRequestStatusGamesList.setValue(new RequestStatus(FAILURE));
+            }
+        };
+    }
+
+    private Callback<List<Video>> getVideosListCallback() {
+        return new Callback<List<Video>>() {
+            @Override
+            public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
+                mRequestStatusVideosList.setValue(response.isSuccessful()
+                        ? new RequestStatus(SUCCESS)
+                        : new RequestStatus(FAILURE));
+                mGameVideosListLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Video>> call, Throwable t) {
+                mRequestStatusVideosList.setValue(new RequestStatus(FAILURE));
             }
         };
     }

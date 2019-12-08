@@ -2,8 +2,6 @@ package com.addison.gamingbacklog.repository.service.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Game {
     @SerializedName("id")
     private Integer mId;
@@ -15,8 +13,6 @@ public class Game {
     private String mName;
     @SerializedName("summary")
     private String mSummary;
-    @SerializedName("videos")
-    private List<Video> mVideos;
 
     public Integer getId() {
         return mId;
@@ -36,9 +32,5 @@ public class Game {
 
     public String getSummary() {
         return mSummary;
-    }
-
-    public List<Video> getVideos() {
-        return mVideos;
     }
 }
