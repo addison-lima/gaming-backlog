@@ -15,9 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.addison.gamingbacklog.R;
 import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
-import com.addison.gamingbacklog.repository.service.Game;
+import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
-import com.addison.gamingbacklog.repository.service.Video;
+import com.addison.gamingbacklog.repository.service.models.Video;
 import com.addison.gamingbacklog.ui.MainActivity;
 
 import java.util.Calendar;

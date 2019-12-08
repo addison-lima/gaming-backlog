@@ -1,5 +1,7 @@
 package com.addison.gamingbacklog.repository.service;
 
+import com.addison.gamingbacklog.repository.service.models.Game;
+
 import java.util.List;
 
 import retrofit2.Call;

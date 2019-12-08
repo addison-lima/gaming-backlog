@@ -2,7 +2,7 @@ package com.addison.gamingbacklog.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.addison.gamingbacklog.repository.service.Game;
+import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.IGDBService;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.addison.gamingbacklog.repository.Repository;
-import com.addison.gamingbacklog.repository.service.Game;
+import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.addison.gamingbacklog.repository.service;
+package com.addison.gamingbacklog.repository.service.models;
 
 import com.google.gson.annotations.SerializedName;
 

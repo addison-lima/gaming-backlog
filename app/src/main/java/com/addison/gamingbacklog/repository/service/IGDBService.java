@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.addison.gamingbacklog.BuildConfig;
+import com.addison.gamingbacklog.repository.service.models.Game;
 
 import java.io.IOException;
 import java.util.List;
