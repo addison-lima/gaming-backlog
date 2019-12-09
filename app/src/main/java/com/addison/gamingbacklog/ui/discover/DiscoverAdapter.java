@@ -1,12 +1,13 @@
 package com.addison.gamingbacklog.ui.discover;
 
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.addison.gamingbacklog.databinding.GameItemBinding;
 import com.addison.gamingbacklog.repository.service.models.Game;
 
 import java.util.Calendar;
@@ -28,19 +29,16 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
     @NonNull
     @Override
     public DiscoverAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        GameItemBinding gameItemBinding = GameItemBinding.inflate(layoutInflater, parent, false);
+        return new DiscoverAdapterViewHolder(gameItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DiscoverAdapterViewHolder holder, int position) {
-        Game game = mData.get(position);
-        Log.d("ADD_TEST", "id: " + game.getId());
-        Log.d("ADD_TEST", "name: " + game.getName());
-        Log.d("ADD_TEST", "summary: " + game.getSummary());
-        Log.d("ADD_TEST", "cover: " + game.getCover().getUrl());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
-        Log.d("ADD_TEST", "first_release_date: " + calendar.get(Calendar.YEAR));
+        if (mData != null) {
+            holder.bind(mData.get(position));
+        }
     }
 
     @Override
@@ -53,14 +51,28 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
     public void setData(List<Game> data) {
         mData = data;
+        notifyDataSetChanged();
     }
 
     public class DiscoverAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        public DiscoverAdapterViewHolder(@NonNull View itemView) {
-            super(itemView);
+        private final GameItemBinding mBinding;
+
+        public DiscoverAdapterViewHolder(GameItemBinding gameItemBinding) {
+            super(gameItemBinding.getRoot());
+            mBinding = gameItemBinding;
             itemView.setOnClickListener(this);
+        }
+
+        public void bind(Game game) {
+            if (game != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
+                mBinding.tvGameName.setText(game.getName());
+                mBinding.tvGameRelease.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+                mBinding.executePendingBindings();
+            }
         }
 
         @Override

@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.addison.gamingbacklog.R;
 import com.addison.gamingbacklog.databinding.FragmentDiscoverBinding;
@@ -32,8 +33,6 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDiscoverAdapter = new DiscoverAdapter(this);
-
         DiscoverViewModel discoverViewModel = ViewModelProviders.of(this)
                 .get(DiscoverViewModel.class);
 
@@ -47,6 +46,10 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
         mFragmentDiscoverBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_discover,
                 container, false);
         mFragmentDiscoverBinding.setLifecycleOwner(this);
+
+        mDiscoverAdapter = new DiscoverAdapter(this);
+        mFragmentDiscoverBinding.rvDiscover.setLayoutManager(new LinearLayoutManager(getContext()));
+        mFragmentDiscoverBinding.rvDiscover.setAdapter(mDiscoverAdapter);
 
         return mFragmentDiscoverBinding.getRoot();
     }
@@ -89,6 +92,9 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
                         ? View.VISIBLE : View.INVISIBLE);
         mFragmentDiscoverBinding.pbLoadingIndicator
                 .setVisibility(requestState.equals(RequestStatus.RequestState.LOADING)
+                        ? View.VISIBLE : View.INVISIBLE);
+        mFragmentDiscoverBinding.rvDiscover
+                .setVisibility(requestState.equals(RequestStatus.RequestState.SUCCESS)
                         ? View.VISIBLE : View.INVISIBLE);
     }
 

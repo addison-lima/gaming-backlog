@@ -11,6 +11,7 @@
 
     <!-- DiscoverFragment -->
     <string name="connection_error">An error has occurred. Please check your internet connection and try again.</string>
+    <string name="cover_content_description">Game Cover</string>
 
     <!-- Sample AdMob App ID -->
     <string name="ad_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
