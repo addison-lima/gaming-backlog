@@ -7,6 +7,9 @@ import android.os.Bundle;
 
 import com.addison.gamingbacklog.GamingBacklogApplication;
 import com.addison.gamingbacklog.repository.service.models.Video;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,6 +47,8 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mVideosAdapter = new VideosAdapter(this);
 
         initializeTracker();
+
+        initializeAds();
     }
 
     @Override
@@ -75,5 +80,14 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             mTracker.setScreenName(screenName);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         }
+    }
+
+    private void initializeAds() {
+        MobileAds.initialize(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        AdView adView = findViewById(R.id.adView);
+        adView.loadAd(adRequest);
     }
 }

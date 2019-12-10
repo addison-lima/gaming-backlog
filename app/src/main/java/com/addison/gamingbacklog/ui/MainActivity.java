@@ -9,9 +9,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.addison.gamingbacklog.GamingBacklogApplication;
 import com.addison.gamingbacklog.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
 
         initializeTracker();
-
-        initializeAds();
     }
 
     @Override
@@ -56,14 +51,5 @@ public class MainActivity extends AppCompatActivity {
     private void initializeTracker() {
         GamingBacklogApplication application = (GamingBacklogApplication) getApplication();
         mTracker = application.getDefaultTracker();
-    }
-
-    private void initializeAds() {
-        MobileAds.initialize(this);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        AdView adView = findViewById(R.id.adView);
-        adView.loadAd(adRequest);
     }
 }
