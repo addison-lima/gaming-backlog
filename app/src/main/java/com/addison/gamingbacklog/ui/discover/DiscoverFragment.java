@@ -47,7 +47,7 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
                 container, false);
         mFragmentDiscoverBinding.setLifecycleOwner(this);
 
-        mDiscoverAdapter = new DiscoverAdapter(this);
+        mDiscoverAdapter = new DiscoverAdapter(getContext(), this);
         mFragmentDiscoverBinding.rvDiscover.setLayoutManager(new LinearLayoutManager(getContext()));
         mFragmentDiscoverBinding.rvDiscover.setAdapter(mDiscoverAdapter);
 

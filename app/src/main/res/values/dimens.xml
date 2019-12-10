@@ -8,10 +8,14 @@
     <dimen name="ad_margin">8dp</dimen>
     <!-- DetailsActivity -->
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="video_thumb_width">96dp</dimen>
+    <dimen name="video_thumb_height">54dp</dimen>
 
     <!-- DiscoverFragment -->
     <dimen name="failure_message_margin">24dp</dimen>
+    <dimen name="item_large_margin">20dp</dimen>
     <dimen name="item_margin">5dp</dimen>
+    <dimen name="game_cover_size">82dp</dimen>
     <dimen name="game_name_text_size">20sp</dimen>
 
 </resources>

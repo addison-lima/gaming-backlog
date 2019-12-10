@@ -1,5 +1,6 @@
 package com.addison.gamingbacklog.ui.discover;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.addison.gamingbacklog.databinding.GameItemBinding;
 import com.addison.gamingbacklog.repository.service.models.Game;
+import com.bumptech.glide.Glide;
 
 import java.util.Calendar;
 import java.util.List;
@@ -16,13 +18,15 @@ import java.util.List;
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DiscoverAdapterViewHolder> {
 
     private final DiscoverAdapterOnClickHandler mOnClickHandler;
+    private Context mContext;
     private List<Game> mData;
 
     public interface DiscoverAdapterOnClickHandler {
         void onClick(Game game);
     }
 
-    public DiscoverAdapter(DiscoverAdapterOnClickHandler onClickHandler) {
+    public DiscoverAdapter(Context context, DiscoverAdapterOnClickHandler onClickHandler) {
+        mContext = context;
         mOnClickHandler = onClickHandler;
     }
 
@@ -67,6 +71,12 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
         public void bind(Game game) {
             if (game != null) {
+                if (game.getCover() != null) {
+                    Glide.with(mContext.getApplicationContext())
+                            .load(game.getCover().getUrl())
+                            .centerCrop()
+                            .into(mBinding.ivGameCover);
+                }
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(game.getFirstReleaseDate() * 1000);
                 mBinding.tvGameName.setText(game.getName());

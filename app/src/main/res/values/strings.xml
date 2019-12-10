@@ -8,10 +8,14 @@
     <string name="title_discover">Discover</string>
     <!-- DetailsActivity -->
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="video_content_description">Game Video</string>
+    <string name="video_title" translatable="false">Game Awards 2016 Trailer</string>
 
     <!-- DiscoverFragment -->
     <string name="connection_error">An error has occurred. Please check your internet connection and try again.</string>
     <string name="cover_content_description">Game Cover</string>
+    <string name="game_name" translatable="false">The Legend of Zelda: Breath of the Wild</string>
+    <string name="game_release_year" translatable="false">2017</string>
 
     <!-- Sample AdMob App ID -->
     <string name="ad_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>

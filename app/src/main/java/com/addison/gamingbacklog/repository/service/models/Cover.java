@@ -13,6 +13,6 @@ public class Cover {
     }
 
     public String getUrl() {
-        return mUrl;
+        return "https:"+ mUrl;
     }
 }
