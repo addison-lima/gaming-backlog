@@ -20,6 +20,7 @@ import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
 import com.addison.gamingbacklog.ui.MainActivity;
 import com.addison.gamingbacklog.ui.details.DetailsActivity;
+import com.addison.gamingbacklog.ui.details.GameUi;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +64,7 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
     @Override
     public void onClick(Game game) {
         Intent intent = new Intent(getContext(), DetailsActivity.class);
+        intent.putExtra(DetailsActivity.EXTRA_GAME, convert(game));
         startActivity(intent);
     }
 
@@ -100,5 +102,14 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
 
     private void trackScreen(String screenName) {
         ((MainActivity) Objects.requireNonNull(getActivity())).trackScreen(screenName);
+    }
+
+    private GameUi convert(Game game) {
+        return new GameUi(
+                game.getId(),
+                (game.getCover() != null) ? game.getCover().getUrl() : null,
+                game.getFirstReleaseDate(),
+                game.getName(),
+                game.getSummary());
     }
 }

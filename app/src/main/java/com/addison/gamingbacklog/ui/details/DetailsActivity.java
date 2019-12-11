@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.addison.gamingbacklog.GamingBacklogApplication;
+import com.addison.gamingbacklog.databinding.ActivityDetailsBinding;
+import com.addison.gamingbacklog.databinding.ContentDetailsBinding;
 import com.addison.gamingbacklog.repository.service.models.Video;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -17,20 +20,41 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.addison.gamingbacklog.R;
 
+import java.util.Calendar;
+
 public class DetailsActivity extends AppCompatActivity implements VideosAdapter.VideosAdapterOnClickHandler {
 
-    private Tracker mTracker;
+    public static final String EXTRA_GAME = "game";
+
+    private ActivityDetailsBinding mActivityDetailsBinding;
     private VideosAdapter mVideosAdapter;
+
+    private GameUi mGameUi;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+
+        mActivityDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_details);
+        mActivityDetailsBinding.setLifecycleOwner(this);
+
+        if (getIntent().hasExtra(EXTRA_GAME)) {
+            mGameUi = getIntent().getParcelableExtra(EXTRA_GAME);
+            populateUi(mGameUi);
+        } else {
+            Toast.makeText(this, getString(R.string.details_error),
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -89,5 +113,22 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
 
         AdView adView = findViewById(R.id.adView);
         adView.loadAd(adRequest);
+    }
+
+    private void populateUi(GameUi gameUi) {
+        if (gameUi.getCoverUrl() != null) {
+            Glide.with(this.getApplicationContext())
+                    .load(gameUi.getCoverUrl())
+                    .centerCrop()
+                    .into(mActivityDetailsBinding.contentDetails.ivGameCover);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(gameUi.getFirstReleaseDate() * 1000);
+        mActivityDetailsBinding.contentDetails.tvGameName.setText(
+                gameUi.getName());
+        mActivityDetailsBinding.contentDetails.tvGameRelease.setText(
+                String.valueOf(calendar.get(Calendar.YEAR)));
+        mActivityDetailsBinding.contentDetails.tvGameSummary.setText(
+                gameUi.getSummary());
     }
 }
