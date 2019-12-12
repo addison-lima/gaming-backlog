@@ -13,6 +13,7 @@
 
     <!-- DiscoverFragment -->
     <dimen name="detail_padding_bottom">100dp</dimen>
+    <dimen name="no_video_padding">50dp</dimen>
     <dimen name="failure_message_margin">24dp</dimen>
     <dimen name="item_large_margin">20dp</dimen>
     <dimen name="item_margin">5dp</dimen>
