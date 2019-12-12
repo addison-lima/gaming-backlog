@@ -7,19 +7,15 @@ import android.os.Bundle;
 
 import com.addison.gamingbacklog.GamingBacklogApplication;
 import com.addison.gamingbacklog.databinding.ActivityDetailsBinding;
-import com.addison.gamingbacklog.databinding.ContentDetailsBinding;
 import com.addison.gamingbacklog.repository.service.models.Video;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import android.view.View;
@@ -55,18 +51,13 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             finish();
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mActivityDetailsBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mVideosAdapter = new VideosAdapter(this);
 
@@ -108,11 +99,8 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
 
     private void initializeAds() {
         MobileAds.initialize(this);
-
         AdRequest adRequest = new AdRequest.Builder().build();
-
-        AdView adView = findViewById(R.id.adView);
-        adView.loadAd(adRequest);
+        mActivityDetailsBinding.adView.loadAd(adRequest);
     }
 
     private void populateUi(GameUi gameUi) {
