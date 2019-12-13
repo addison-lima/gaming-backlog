@@ -136,7 +136,7 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     }
 
     private void retrieveVideos(Integer gameId) {
-        Repository repository = Repository.getInstance();
+        Repository repository = Repository.getInstance(getApplicationContext());
         repository.retrieveGameVideos(gameId);
         repository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
         repository.getGameVideosList().observe(this, getGameVideosListObserver());

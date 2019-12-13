@@ -3,8 +3,6 @@ package com.addison.gamingbacklog.ui.details;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.addison.gamingbacklog.repository.service.models.Game;
-
 public class GameUi implements Parcelable {
 
     private Integer mId;

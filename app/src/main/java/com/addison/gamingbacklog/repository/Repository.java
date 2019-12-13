@@ -1,7 +1,10 @@
 package com.addison.gamingbacklog.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 
+import com.addison.gamingbacklog.repository.database.LibraryDatabase;
 import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.IGDBService;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
@@ -15,15 +18,17 @@ public class Repository {
     private static Repository sInstance;
 
     private final IGDBService mIGDBService;
+    private final LibraryDatabase mLibraryDatabase;
 
-    private Repository() {
+    private Repository(Context context) {
         mIGDBService = new IGDBService();
+        mLibraryDatabase = LibraryDatabase.getInstance(context);
     }
 
-    public static Repository getInstance() {
+    public static Repository getInstance(Context context) {
         synchronized (LOCK) {
             if (sInstance == null) {
-                sInstance = new Repository();
+                sInstance = new Repository(context);
             }
         }
         return sInstance;

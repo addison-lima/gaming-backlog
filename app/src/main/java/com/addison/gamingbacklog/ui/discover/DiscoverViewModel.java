@@ -16,14 +16,14 @@ public class DiscoverViewModel extends AndroidViewModel {
 
     public DiscoverViewModel(@NonNull Application application) {
         super(application);
-        Repository.getInstance().retrieveGames();
+        Repository.getInstance(getApplication()).retrieveGames();
     }
 
     public LiveData<RequestStatus> getRequestGamesStatus() {
-        return Repository.getInstance().getRequestGamesStatus();
+        return Repository.getInstance(getApplication()).getRequestGamesStatus();
     }
 
     public LiveData<List<Game>> getGamesList() {
-        return Repository.getInstance().getGamesList();
+        return Repository.getInstance(getApplication()).getGamesList();
     }
 }
