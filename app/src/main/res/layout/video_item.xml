@@ -4,32 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_video_thumbnail"
             android:layout_width="@dimen/video_thumb_width"
             android:layout_height="@dimen/video_thumb_height"
-            android:layout_margin="@dimen/item_margin"
+            android:layout_margin="@dimen/item_large_margin"
             android:background="@color/colorBackground"
             android:contentDescription="@string/video_content_description"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/tv_game_name"
-            android:layout_width="96dp"
+            android:id="@+id/tv_video_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_margin"
             android:layout_marginEnd="@dimen/item_margin"
             android:layout_marginBottom="@dimen/item_margin"
+            android:textAlignment="center"
             android:ellipsize="end"
             android:maxLines="2"
             app:layout_constraintTop_toBottomOf="@id/iv_video_thumbnail"
-            app:layout_constraintLeft_toLeftOf="@id/iv_video_thumbnail"
-            app:layout_constraintRight_toRightOf="@id/iv_video_thumbnail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="@string/video_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

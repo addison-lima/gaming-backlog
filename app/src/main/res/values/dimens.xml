@@ -8,8 +8,8 @@
     <dimen name="ad_margin">8dp</dimen>
     <!-- DetailsActivity -->
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="video_thumb_width">96dp</dimen>
-    <dimen name="video_thumb_height">54dp</dimen>
+    <dimen name="video_thumb_width">320dp</dimen>
+    <dimen name="video_thumb_height">180dp</dimen>
 
     <!-- DiscoverFragment -->
     <dimen name="detail_padding_bottom">100dp</dimen>

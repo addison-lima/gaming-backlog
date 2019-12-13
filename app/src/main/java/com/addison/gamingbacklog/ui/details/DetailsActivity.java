@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.addison.gamingbacklog.GamingBacklogApplication;
 import com.addison.gamingbacklog.databinding.ActivityDetailsBinding;
+import com.addison.gamingbacklog.repository.Repository;
+import com.addison.gamingbacklog.repository.service.RequestStatus;
 import com.addison.gamingbacklog.repository.service.models.Video;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
@@ -17,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 import com.addison.gamingbacklog.R;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity implements VideosAdapter.VideosAdapterOnClickHandler {
 
@@ -32,7 +37,6 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     private ActivityDetailsBinding mActivityDetailsBinding;
     private VideosAdapter mVideosAdapter;
 
-    private GameUi mGameUi;
     private Tracker mTracker;
 
     @Override
@@ -42,9 +46,14 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mActivityDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_details);
         mActivityDetailsBinding.setLifecycleOwner(this);
 
+        GameUi gameUi = null;
+
         if (getIntent().hasExtra(EXTRA_GAME)) {
-            mGameUi = getIntent().getParcelableExtra(EXTRA_GAME);
-            populateUi(mGameUi);
+            gameUi = getIntent().getParcelableExtra(EXTRA_GAME);
+        }
+
+        if (gameUi != null) {
+            populateUi(gameUi);
         } else {
             Toast.makeText(this, getString(R.string.details_error),
                     Toast.LENGTH_LONG).show();
@@ -59,7 +68,11 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             }
         });
 
-        mVideosAdapter = new VideosAdapter(this);
+        mVideosAdapter = new VideosAdapter(this, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mActivityDetailsBinding.contentDetails.rvVideos.setLayoutManager(linearLayoutManager);
+        mActivityDetailsBinding.contentDetails.rvVideos.setAdapter(mVideosAdapter);
 
         initializeTracker();
 
@@ -118,5 +131,46 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
                 String.valueOf(calendar.get(Calendar.YEAR)));
         mActivityDetailsBinding.contentDetails.tvGameSummary.setText(
                 gameUi.getSummary());
+
+        retrieveVideos(gameUi.getId());
+    }
+
+    private void retrieveVideos(Integer gameId) {
+        Repository repository = Repository.getInstance();
+        repository.retrieveGameVideos(gameId);
+        repository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
+        repository.getGameVideosList().observe(this, getGameVideosListObserver());
+    }
+
+    private Observer<RequestStatus> getRequestVideosStatusObserver() {
+        return new Observer<RequestStatus>() {
+            @Override
+            public void onChanged(RequestStatus requestStatus) {
+                if (requestStatus != null) {
+                    updateUi(requestStatus.getRequestState());
+                }
+            }
+        };
+    }
+
+    private Observer<List<Video>> getGameVideosListObserver() {
+        return new Observer<List<Video>>() {
+            @Override
+            public void onChanged(List<Video> videos) {
+                mVideosAdapter.setData(videos);
+            }
+        };
+    }
+
+    private void updateUi(RequestStatus.RequestState requestState) {
+        mActivityDetailsBinding.contentDetails.tvVideos
+                .setVisibility(requestState.equals(RequestStatus.RequestState.FAILURE)
+                        ? View.VISIBLE : View.INVISIBLE);
+        mActivityDetailsBinding.contentDetails.pbLoadingIndicator
+                .setVisibility(requestState.equals(RequestStatus.RequestState.LOADING)
+                        ? View.VISIBLE : View.INVISIBLE);
+        mActivityDetailsBinding.contentDetails.rvVideos
+                .setVisibility(requestState.equals(RequestStatus.RequestState.SUCCESS)
+                        ? View.VISIBLE : View.INVISIBLE);
     }
 }

@@ -63,8 +63,12 @@ public class IGDBService {
         call.enqueue(getVideosListCallback());
     }
 
-    public LiveData<RequestStatus> getRequestStatus() {
+    public LiveData<RequestStatus> getRequestGamesStatus() {
         return mRequestStatusGamesList;
+    }
+
+    public LiveData<RequestStatus> getRequestVideosStatus() {
+        return mRequestStatusVideosList;
     }
 
     public LiveData<List<Game>> getGamesList() {

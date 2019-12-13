@@ -37,7 +37,7 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
         DiscoverViewModel discoverViewModel = ViewModelProviders.of(this)
                 .get(DiscoverViewModel.class);
 
-        discoverViewModel.getRequestStatus().observe(this, getRequestStatusObserver());
+        discoverViewModel.getRequestGamesStatus().observe(this, getRequestGamesStatusObserver());
         discoverViewModel.getGamesList().observe(this, getGamesListObserver());
     }
 
@@ -68,7 +68,7 @@ public class DiscoverFragment extends Fragment implements DiscoverAdapter.Discov
         startActivity(intent);
     }
 
-    private Observer<RequestStatus> getRequestStatusObserver() {
+    private Observer<RequestStatus> getRequestGamesStatusObserver() {
         return new Observer<RequestStatus>() {
             @Override
             public void onChanged(RequestStatus requestStatus) {

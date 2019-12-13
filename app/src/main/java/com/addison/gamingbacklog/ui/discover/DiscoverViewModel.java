@@ -19,8 +19,8 @@ public class DiscoverViewModel extends AndroidViewModel {
         Repository.getInstance().retrieveGames();
     }
 
-    public LiveData<RequestStatus> getRequestStatus() {
-        return Repository.getInstance().getRequestStatus();
+    public LiveData<RequestStatus> getRequestGamesStatus() {
+        return Repository.getInstance().getRequestGamesStatus();
     }
 
     public LiveData<List<Game>> getGamesList() {

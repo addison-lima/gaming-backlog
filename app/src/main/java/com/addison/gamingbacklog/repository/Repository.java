@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.IGDBService;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
+import com.addison.gamingbacklog.repository.service.models.Video;
 
 import java.util.List;
 
@@ -32,11 +33,23 @@ public class Repository {
         mIGDBService.retrieveGames();
     }
 
-    public LiveData<RequestStatus> getRequestStatus() {
-        return mIGDBService.getRequestStatus();
+    public void retrieveGameVideos(Integer gameId) {
+        mIGDBService.retrieveGameVideos(gameId);
+    }
+
+    public LiveData<RequestStatus> getRequestGamesStatus() {
+        return mIGDBService.getRequestGamesStatus();
+    }
+
+    public LiveData<RequestStatus> getRequestVideosStatus() {
+        return mIGDBService.getRequestVideosStatus();
     }
 
     public LiveData<List<Game>> getGamesList() {
         return mIGDBService.getGamesList();
+    }
+
+    public LiveData<List<Video>> getGameVideosList() {
+        return mIGDBService.getGameVideosList();
     }
 }
