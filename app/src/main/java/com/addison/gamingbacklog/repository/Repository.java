@@ -1,6 +1,7 @@
 package com.addison.gamingbacklog.repository;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -61,5 +62,25 @@ public class Repository {
 
     public LiveData<GameEntry> getGame(Integer id) {
         return mLibraryDatabase.libraryDao().getGame(id);
+    }
+
+    public void addGameToLibrary(final GameEntry gameEntry) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mLibraryDatabase.libraryDao().insertGame(gameEntry);
+                return null;
+            }
+        }.execute();
+    }
+
+    public void removeGameFromLibrary(final GameEntry gameEntry) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mLibraryDatabase.libraryDao().deleteGame(gameEntry);
+                return null;
+            }
+        }.execute();
     }
 }

@@ -38,6 +38,8 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     private VideosAdapter mVideosAdapter;
 
     private Tracker mTracker;
+    private Repository mRepository;
+    private GameUi mGameUi;
     private GameEntry mGameEntry;
 
     @Override
@@ -47,14 +49,14 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mActivityDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_details);
         mActivityDetailsBinding.setLifecycleOwner(this);
 
-        GameUi gameUi = null;
+        mGameUi = null;
 
         if (getIntent().hasExtra(EXTRA_GAME)) {
-            gameUi = getIntent().getParcelableExtra(EXTRA_GAME);
+            mGameUi = getIntent().getParcelableExtra(EXTRA_GAME);
         }
 
-        if (gameUi != null) {
-            populateUi(gameUi);
+        if (mGameUi != null) {
+            populateUi(mGameUi);
         } else {
             Toast.makeText(this, getString(R.string.details_error),
                     Toast.LENGTH_LONG).show();
@@ -66,9 +68,9 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             @Override
             public void onClick(View view) {
                 if (mGameEntry != null) {
-                    //TODO remove from Library
+                    mRepository.removeGameFromLibrary(mGameEntry);
                 } else {
-                    //TODO add to Library
+                    mRepository.addGameToLibrary(convertToGameEntry(mGameUi));
                 }
             }
         });
@@ -141,11 +143,11 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     }
 
     private void retrieveGameFromLibraryAndVideos(Integer gameId) {
-        Repository repository = Repository.getInstance(getApplicationContext());
-        repository.retrieveGameVideos(gameId);
-        repository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
-        repository.getGameVideosList().observe(this, getGameVideosListObserver());
-        repository.getGame(gameId).observe(this, getGameObserver());
+        mRepository = Repository.getInstance(getApplicationContext());
+        mRepository.retrieveGameVideos(gameId);
+        mRepository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
+        mRepository.getGameVideosList().observe(this, getGameVideosListObserver());
+        mRepository.getGame(gameId).observe(this, getGameObserver());
     }
 
     private Observer<RequestStatus> getRequestVideosStatusObserver() {
@@ -173,6 +175,13 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             @Override
             public void onChanged(GameEntry gameEntry) {
                 mGameEntry = gameEntry;
+                if (gameEntry == null) {
+                    mActivityDetailsBinding.fab.setImageDrawable(
+                            getDrawable(R.drawable.ic_not_saved_in_library_24dp));
+                } else {
+                    mActivityDetailsBinding.fab.setImageDrawable(
+                            getDrawable(R.drawable.ic_saved_in_library_24dp));
+                }
                 mActivityDetailsBinding.fab.show();
             }
         };
@@ -188,5 +197,10 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mActivityDetailsBinding.contentDetails.rvVideos
                 .setVisibility(requestState.equals(RequestStatus.RequestState.SUCCESS)
                         ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private GameEntry convertToGameEntry(GameUi gameUi) {
+        return new GameEntry(gameUi.getId(), gameUi.getCoverUrl(), gameUi.getFirstReleaseDate(),
+                gameUi.getName(), gameUi.getSummary());
     }
 }
