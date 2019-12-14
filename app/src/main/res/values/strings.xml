@@ -20,6 +20,10 @@
     <string name="game_name" translatable="false">The Legend of Zelda: Breath of the Wild</string>
     <string name="game_release_year" translatable="false">2017</string>
 
+    <!-- Widget -->
+    <string name="now_playing">Now Playing</string>
+    <string name="no_games">No Games</string>
+
     <!-- Sample AdMob App ID -->
     <string name="ad_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <!-- Sample Banner ad unit ID -->

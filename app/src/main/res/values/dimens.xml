@@ -22,4 +22,9 @@
     <dimen name="loading_indicator_size">42dp</dimen>
     <dimen name="failure_message_text_size">20sp</dimen>
 
+    <!-- Widget -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_playing_text_size">20sp</dimen>
+    <dimen name="widget_games_text_size">16sp</dimen>
+
 </resources>
