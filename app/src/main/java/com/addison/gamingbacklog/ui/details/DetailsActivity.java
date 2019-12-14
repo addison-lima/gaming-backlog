@@ -113,7 +113,7 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     private void initializeAds() {
         MobileAds.initialize(this);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mActivityDetailsBinding.adView.loadAd(adRequest);
+        mActivityDetailsBinding.contentDetails.adView.loadAd(adRequest);
     }
 
     private void populateUi(GameUi gameUi) {
