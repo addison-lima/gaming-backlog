@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.addison.gamingbacklog.GamingBacklogApplication;
 import com.addison.gamingbacklog.databinding.ActivityDetailsBinding;
 import com.addison.gamingbacklog.repository.Repository;
+import com.addison.gamingbacklog.repository.database.GameEntry;
 import com.addison.gamingbacklog.repository.service.RequestStatus;
 import com.addison.gamingbacklog.repository.service.models.Video;
 import com.bumptech.glide.Glide;
@@ -15,7 +16,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -38,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
     private VideosAdapter mVideosAdapter;
 
     private Tracker mTracker;
+    private GameEntry mGameEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,15 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             finish();
         }
 
+        mActivityDetailsBinding.fab.hide();
         mActivityDetailsBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (mGameEntry != null) {
+                    //TODO remove from Library
+                } else {
+                    //TODO add to Library
+                }
             }
         });
 
@@ -132,14 +137,15 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mActivityDetailsBinding.contentDetails.tvGameSummary.setText(
                 gameUi.getSummary());
 
-        retrieveVideos(gameUi.getId());
+        retrieveGameFromLibraryAndVideos(gameUi.getId());
     }
 
-    private void retrieveVideos(Integer gameId) {
+    private void retrieveGameFromLibraryAndVideos(Integer gameId) {
         Repository repository = Repository.getInstance(getApplicationContext());
         repository.retrieveGameVideos(gameId);
         repository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
         repository.getGameVideosList().observe(this, getGameVideosListObserver());
+        repository.getGame(gameId).observe(this, getGameObserver());
     }
 
     private Observer<RequestStatus> getRequestVideosStatusObserver() {
@@ -158,6 +164,16 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             @Override
             public void onChanged(List<Video> videos) {
                 mVideosAdapter.setData(videos);
+            }
+        };
+    }
+
+    private Observer<GameEntry> getGameObserver() {
+        return new Observer<GameEntry>() {
+            @Override
+            public void onChanged(GameEntry gameEntry) {
+                mGameEntry = gameEntry;
+                mActivityDetailsBinding.fab.show();
             }
         };
     }

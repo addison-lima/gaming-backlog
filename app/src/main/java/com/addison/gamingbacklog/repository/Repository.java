@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.addison.gamingbacklog.repository.database.GameEntry;
 import com.addison.gamingbacklog.repository.database.LibraryDatabase;
 import com.addison.gamingbacklog.repository.service.models.Game;
 import com.addison.gamingbacklog.repository.service.IGDBService;
@@ -56,5 +57,9 @@ public class Repository {
 
     public LiveData<List<Video>> getGameVideosList() {
         return mIGDBService.getGameVideosList();
+    }
+
+    public LiveData<GameEntry> getGame(Integer id) {
+        return mLibraryDatabase.libraryDao().getGame(id);
     }
 }
