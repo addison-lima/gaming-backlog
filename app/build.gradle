@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file(GamingBacklog_StoreFile)
+            storePassword GamingBacklog_StorePassword
+            keyAlias GamingBacklog_KeyAlias
+            keyPassword GamingBacklog_KeyPassword
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
     defaultConfig {
@@ -20,6 +28,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', "IGDB_API_KEY", GamingBacklog_IGDBApiKey
+            signingConfig signingConfigs.release
         }
     }
     dataBinding {
