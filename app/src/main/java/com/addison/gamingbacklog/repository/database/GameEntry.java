@@ -25,13 +25,25 @@ public class GameEntry {
     @ColumnInfo(name = "summary")
     private String mSummary;
 
+    @ColumnInfo(name = "is_playing")
+    private Boolean mIsPlaying;
+
+    @ColumnInfo(name = "has_beat")
+    private Boolean mHasBeat;
+
+    @ColumnInfo(name = "is_saved")
+    private Boolean mIsSaved;
+
     public GameEntry(@NonNull Integer id, String coverUrl, Long firstReleaseDate, String name,
-                     String summary) {
+                     String summary, Boolean isPlaying, Boolean hasBeat, Boolean isSaved) {
         mId = id;
         mCoverUrl = coverUrl;
         mFirstReleaseDate = firstReleaseDate;
         mName = name;
         mSummary = summary;
+        mIsPlaying = isPlaying;
+        mHasBeat = hasBeat;
+        mIsSaved = isSaved;
     }
 
     @NonNull
@@ -53,5 +65,17 @@ public class GameEntry {
 
     public String getSummary() {
         return mSummary;
+    }
+
+    public Boolean getIsPlaying() {
+        return mIsPlaying;
+    }
+
+    public Boolean getHasBeat() {
+        return mHasBeat;
+    }
+
+    public Boolean getIsSaved() {
+        return mIsSaved;
     }
 }

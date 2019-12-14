@@ -63,17 +63,13 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             finish();
         }
 
-        mActivityDetailsBinding.fab.hide();
-        mActivityDetailsBinding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mGameEntry != null) {
-                    mRepository.removeGameFromLibrary(mGameEntry);
-                } else {
-                    mRepository.addGameToLibrary(convertToGameEntry(mGameUi));
-                }
-            }
-        });
+        mActivityDetailsBinding.fabPlaying.hide();
+        mActivityDetailsBinding.fabBeat.hide();
+        mActivityDetailsBinding.fabSaved.hide();
+
+        mActivityDetailsBinding.fabPlaying.setOnClickListener(getOnPlayingClickListener());
+        mActivityDetailsBinding.fabBeat.setOnClickListener(getOnBeatClickListener());
+        mActivityDetailsBinding.fabSaved.setOnClickListener(getOnSavedClickListener());
 
         mVideosAdapter = new VideosAdapter(this, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -176,13 +172,29 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
             public void onChanged(GameEntry gameEntry) {
                 mGameEntry = gameEntry;
                 if (gameEntry == null) {
-                    mActivityDetailsBinding.fab.setImageDrawable(
-                            getDrawable(R.drawable.ic_not_saved_in_library_24dp));
+                    mActivityDetailsBinding.fabPlaying.setImageDrawable(
+                            getDrawable(R.drawable.ic_not_playing_24dp));
+                    mActivityDetailsBinding.fabBeat.setImageDrawable(
+                            getDrawable(R.drawable.ic_not_beat_24dp));
+                    mActivityDetailsBinding.fabSaved.setImageDrawable(
+                            getDrawable(R.drawable.ic_not_saved_24dp));
                 } else {
-                    mActivityDetailsBinding.fab.setImageDrawable(
-                            getDrawable(R.drawable.ic_saved_in_library_24dp));
+                    mActivityDetailsBinding.fabPlaying.setImageDrawable(
+                            getDrawable(gameEntry.getIsPlaying()
+                                    ? R.drawable.ic_playing_24dp
+                                    : R.drawable.ic_not_playing_24dp));
+                    mActivityDetailsBinding.fabBeat.setImageDrawable(
+                            getDrawable(gameEntry.getHasBeat()
+                                    ? R.drawable.ic_beat_24dp
+                                    : R.drawable.ic_not_beat_24dp));
+                    mActivityDetailsBinding.fabSaved.setImageDrawable(
+                            getDrawable(gameEntry.getIsSaved()
+                                    ? R.drawable.ic_saved_24dp
+                                    : R.drawable.ic_not_saved_24dp));
                 }
-                mActivityDetailsBinding.fab.show();
+                mActivityDetailsBinding.fabPlaying.show();
+                mActivityDetailsBinding.fabBeat.show();
+                mActivityDetailsBinding.fabSaved.show();
             }
         };
     }
@@ -199,8 +211,57 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
                         ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private GameEntry convertToGameEntry(GameUi gameUi) {
+    private View.OnClickListener getOnPlayingClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mGameEntry != null) {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, !mGameEntry.getIsPlaying(), false,
+                            mGameEntry.getIsSaved()));
+                } else {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, true, false, false));
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener getOnBeatClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mGameEntry != null) {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, false, !mGameEntry.getHasBeat(),
+                            mGameEntry.getIsSaved()));
+                } else {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, false, true, false));
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener getOnSavedClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mGameEntry != null) {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, mGameEntry.getIsPlaying(), mGameEntry.getHasBeat(),
+                            !mGameEntry.getIsSaved()));
+                } else {
+                    mRepository.addGameToLibrary(convertToGameEntry(
+                            mGameUi, false, false, true));
+                }
+            }
+        };
+    }
+
+    private GameEntry convertToGameEntry(GameUi gameUi, Boolean isPlaying, Boolean hasBeat,
+            Boolean isSaved) {
         return new GameEntry(gameUi.getId(), gameUi.getCoverUrl(), gameUi.getFirstReleaseDate(),
-                gameUi.getName(), gameUi.getSummary());
+                gameUi.getName(), gameUi.getSummary(), isPlaying, hasBeat, isSaved);
     }
 }

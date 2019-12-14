@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/statusFragment"
-        android:icon="@drawable/ic_nav_status_24dp"
+        android:icon="@drawable/ic_launcher_24dp"
         android:title="@string/title_status" />
 
     <item
