@@ -22,6 +22,7 @@
 
     <!-- Widget -->
     <string name="now_playing">Now Playing</string>
+    <string name="beaten">Beaten</string>
     <string name="no_games">No Games</string>
 
     <!-- Sample AdMob App ID -->

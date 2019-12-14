@@ -1,4 +1,4 @@
-package com.addison.gamingbacklog.ui.library;
+package com.addison.gamingbacklog.ui.base;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,30 +15,30 @@ import com.bumptech.glide.Glide;
 import java.util.Calendar;
 import java.util.List;
 
-public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryAdapterViewHolder> {
-    private final LibraryAdapterOnClickHandler mOnClickHandler;
+public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameAdapterViewHolder> {
+    private final GameAdapterOnClickHandler mOnClickHandler;
     private Context mContext;
     private List<GameEntry> mData;
 
-    public interface LibraryAdapterOnClickHandler {
+    public interface GameAdapterOnClickHandler {
         void onClick(GameEntry gameEntry);
     }
 
-    public LibraryAdapter(Context context, LibraryAdapterOnClickHandler onClickHandler) {
+    public GameAdapter(Context context, GameAdapterOnClickHandler onClickHandler) {
         mContext = context;
         mOnClickHandler = onClickHandler;
     }
 
     @NonNull
     @Override
-    public LibraryAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GameAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         GameItemBinding gameItemBinding = GameItemBinding.inflate(layoutInflater, parent, false);
-        return new LibraryAdapterViewHolder(gameItemBinding);
+        return new GameAdapterViewHolder(gameItemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LibraryAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GameAdapterViewHolder holder, int position) {
         if (mData != null) {
             holder.bind(mData.get(position));
         }
@@ -57,12 +57,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryA
         notifyDataSetChanged();
     }
 
-    public class LibraryAdapterViewHolder extends RecyclerView.ViewHolder
+    public class GameAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
         private final GameItemBinding mBinding;
 
-        public LibraryAdapterViewHolder(GameItemBinding gameItemBinding) {
+        public GameAdapterViewHolder(GameItemBinding gameItemBinding) {
             super(gameItemBinding.getRoot());
             mBinding = gameItemBinding;
             itemView.setOnClickListener(this);
