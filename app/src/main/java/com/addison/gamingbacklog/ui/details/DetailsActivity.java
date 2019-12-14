@@ -135,15 +135,16 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
         mActivityDetailsBinding.contentDetails.tvGameSummary.setText(
                 gameUi.getSummary());
 
-        retrieveGameFromLibraryAndVideos(gameUi.getId());
+        retrieveGamesAndVideos(gameUi.getId());
     }
 
-    private void retrieveGameFromLibraryAndVideos(Integer gameId) {
+    private void retrieveGamesAndVideos(Integer gameId) {
         mRepository = Repository.getInstance(getApplicationContext());
         mRepository.retrieveGameVideos(gameId);
         mRepository.getRequestVideosStatus().observe(this, getRequestVideosStatusObserver());
         mRepository.getGameVideosList().observe(this, getGameVideosListObserver());
         mRepository.getGame(gameId).observe(this, getGameObserver());
+        mRepository.getPlayingGames().observe(this, getPlayingGamesObserver());
     }
 
     private Observer<RequestStatus> getRequestVideosStatusObserver() {
@@ -195,6 +196,15 @@ public class DetailsActivity extends AppCompatActivity implements VideosAdapter.
                 mActivityDetailsBinding.fabPlaying.show();
                 mActivityDetailsBinding.fabBeat.show();
                 mActivityDetailsBinding.fabSaved.show();
+            }
+        };
+    }
+
+    private Observer<List<GameEntry>> getPlayingGamesObserver() {
+        return new Observer<List<GameEntry>>() {
+            @Override
+            public void onChanged(List<GameEntry> gameEntries) {
+                mRepository.updateWidget(getApplicationContext(), gameEntries);
             }
         };
     }
