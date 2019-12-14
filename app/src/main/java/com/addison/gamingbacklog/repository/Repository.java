@@ -74,6 +74,14 @@ public class Repository {
         return mLibraryDatabase.libraryDao().getPlayingGames();
     }
 
+    public LiveData<List<GameEntry>> getBeatenGames() {
+        return mLibraryDatabase.libraryDao().getBeatenGames();
+    }
+
+    public LiveData<List<GameEntry>> getSavedGames() {
+        return mLibraryDatabase.libraryDao().getSavedGames();
+    }
+
     public LiveData<GameEntry> getGame(Integer id) {
         return mLibraryDatabase.libraryDao().getGame(id);
     }

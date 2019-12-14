@@ -18,6 +18,12 @@ public interface LibraryDao {
     @Query("SELECT * FROM library WHERE is_playing=1")
     LiveData<List<GameEntry>> getPlayingGames();
 
+    @Query("SELECT * FROM library WHERE has_beat=1")
+    LiveData<List<GameEntry>> getBeatenGames();
+
+    @Query("SELECT * FROM library WHERE is_saved=1")
+    LiveData<List<GameEntry>> getSavedGames();
+
     @Query("SELECT * FROM library WHERE id=:id")
     LiveData<GameEntry> getGame(Integer id);
 
